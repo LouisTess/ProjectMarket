@@ -1,0 +1,127 @@
+
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Calculateur de CA et ROI pour Pharmacie</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <img id="logo" src="logo_Tessan_entier2.png" alt="Logo">
+    <form id="calculForm" action="https://script.google.com/macros/s/AKfycbwZEKcsTMgDXeH5ftR0cdQ_UMpJYt1bmMFYA0oUy_TydAX2QTnxxJN-x5-peuCITolu/exec" method="post">
+        <div id="initialInputs">
+            <h1 style="color: #213155;">Simulateur de rentabilité</h1>
+            <label for="nbPassages">Nombre de passages par jour dans votre officine:<span class="required">*</span></label>
+            <input type="number" id="nbPassages" name="nbPassages" min="1" max="500" step="1" required title="Entrez un nombre entre 1 et 500">
+
+            
+            <label for="nbJours">Nombre de jours ouverts par mois:<span class="required">*</span></label>
+            <input type="range" id="nbJours" name="nbJours" min="1" max="31" value="16" class="slider" oninput="updateSliderValue(this.value)">
+            <span id="nbJoursValue">16</span> jours
+
+            <br>
+            <br>
+            
+            <label for="typeDispositif">Choix du dispositif:<span class="required">*</span></label>
+            <select id="typeDispositif" name="typeDispositif" required>
+                <option value="">Sélectionnez votre dispositif</option>
+                <option value="console">Console</option>
+                <option value="borne">Borne</option>
+                <option value="cabine">Cabine</option>
+            </select>
+            <br>
+            
+        
+            <label for="dureeEngagement">Durée d'engagement:<span class="required">*</span></label>
+            <select id="dureeEngagement" name="dureeEngagement" required>
+                <option value="60">60 mois</option>
+                <option value="72">72 mois</option>
+            </select>
+            <br>
+    
+           <button type="button" onclick="validateAndDisplayContactForm()">Calculer ma rentabilité</button>
+
+        </div>
+
+        <div id="contactForm" class="hidden">
+            <h1 style="color: #213155;">Veuillez renseigner vos coordonnées👇</h1>
+            <label for="nom">Nom:<span class="required">*</span></label>
+            <input type="text" id="nom" name="nom" required placeholder="Entrez votre nom">
+            
+            <label for="prenom">Prénom:<span class="required">*</span></label>
+            <input type="text" id="prenom" name="prenom" required placeholder="Entrez votre prénom">
+            
+            <label for="email">Email:<span class="required">*</span></label>
+            <input type="email" id="email" name="email" required placeholder="exemple@domaine.com" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$" title="Veuillez entrer une adresse email valide. Exemple: utilisateur@domaine.com">
+
+            <label for="telephone">Téléphone:<span class="required">*</span></label>
+            <input type="tel" id="telephone" name="telephone" required placeholder="+33 1 23 45 67 89" pattern="(\+?\d{1,4}[\s-]?)?(\(?\d{1,3}\)?[\s-]?)?[\d\s-]{5,}" title="Veuillez entrer un numéro de téléphone valide. Exemple: +33 1 23 45 67 89">
+            <label for="groupement">Groupement :<span class="required">*</span></label>
+            <select id="groupement" name="groupement" required>
+                <option value="">Sélectionnez votre groupement</option>
+                <option value="AUCUN GROUPEMENTS">AUCUN GROUPEMENTS</option>
+                <option value="AUTRES GROUPEMENTS">AUTRES GROUPEMENTS</option>
+                <option value="37 DEGRES MA SANTE">37 DEGRES MA SANTE</option>
+                <option value="ACT PHARMACIE">ACT PHARMACIE</option>
+                <option value="ANTON ET WILLEM">ANTON ET WILLEM</option>
+                <option value="Apothera">Apothera</option>
+                <option value="APP SUD">APP SUD</option>
+                <option value="ASPIC PHARMA">ASPIC PHARMA</option>
+                <option value="COS">COS</option>
+                <option value="ELSIE">ELSIE</option>
+                <option value="EVOLUPHARM">EVOLUPHARM</option>
+                <option value="GRAND EST PHARMA">GRAND EST PHARMA</option>
+                <option value="LAB'OFFICINE (pyxis)">LAB'OFFICINE (pyxis)</option>
+                <option value="LE CARTEL">LE CARTEL</option>
+                <option value="LEADER SANTE">LEADER SANTE</option>
+                <option value="MAGDALEON">MAGDALEON</option>
+                <option value="MAJELIS">MAJELIS</option>
+                <option value="MAXIPHARMA">MAXIPHARMA</option>
+                <option value="NORMANDIE PHARMA">NORMANDIE PHARMA</option>
+                <option value="PHARMACYAL">PHARMACYAL</option>
+                <option value="PHARMADN">PHARMADN</option>
+                <option value="PHARMAREM">PHARMAREM</option>
+                <option value="PHR">PHR</option>
+                <option value="PYXIS PHARMA">PYXIS PHARMA</option>
+                <option value="QUARTZ">QUARTZ</option>
+                <option value="RESEAU SANTE">RESEAU SANTE</option>
+                <option value="SOPHAREF">SOPHAREF</option>
+                <option value="SUPRAPHARM">SUPRAPHARM</option>
+                <option value="TOTUM">TOTUM</option>
+                <option value="TRENTACTIV">TRENTACTIV</option>
+                <option value="UNIVERS PHARMACIE / FORUM SANTE">UNIVERS PHARMACIE / FORUM SANTE</option>
+            </select>
+            <div class="checkbox-container">
+                    <input type="checkbox" id="consentCheckbox" required>
+                    <label for="consentCheckbox">J'accepte que mes informations soient transmises à Tessan<span class="required">*</span></label>
+                </div>
+            <div class="form-label" style="text-align: center; margin-bottom: 20px;">
+                <strong>Profitez de notre offre de parrainage :</strong> gagnez jusqu'à 250 € pour chaque nouveau membre parrainé !
+            </div>
+            <button type="button" onclick="calculer()">Afficher les résultats</button>
+        </div>
+
+        <div id="results" class="hidden">
+            <div id="rentableMessage" class="resultatMessage" style="display: none;"></div>
+            <div id="detailsAvantages" class="detailsMessage" style="display: none;"></div>
+            
+            <div class="resultat">
+               <h1>Votre simulation</h1>
+                <p>Grâce à votre dispositif de téléconsultation, vous réaliserez <span class="highlight" id="caResultat">---</span> de chiffre d'affaires sur la période.</p>
+                <p>Vous réaliserez en moyenne <span class="highlight" id="tcParMois">---</span> téléconsultations par mois.</p>
+                <p>Votre dispositif est rentabilisable dès <span class="highlight" id="teleconsultationsRentable">---</span> téléconsultations par mois.</p>
+                <p class="disclaimer">Les résultats présentés sont des estimations basées sur des hypothèses actuelles concernant l'utilisation de nos dispositifs et ne garantissent pas les performances futures.</p>
+                <button class="cta-button">Je souhaite connaître les offres actuelles</button>
+            </div>
+            
+        </div>
+        
+        <div class="form-note" id="form-note">
+            <em><span class="required">*</span> Champs obligatoires</em>
+        </div>
+    </form>
+    <script src="script.js"></script>
+</body>
+</html>
