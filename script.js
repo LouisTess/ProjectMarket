@@ -2,13 +2,30 @@
 document.addEventListener("DOMContentLoaded", function() {
     document.getElementById("calculForm").addEventListener("submit", function(event) {
         event.preventDefault();
-        // Appel de la fonction de calcul et validation
         validateAndDisplayContactForm();
     });
+/*
+    document.getElementById("ouiButton").addEventListener("click", function() {
+        document.getElementById("userChoice").value = "Oui";
+        document.getElementById("responseMessage").textContent = "Un conseiller va vous recontacter dans les plus brefs délais.";
+        document.getElementById("responseMessage").classList.remove("hidden");
+        submitData();
+    });
+
+    document.getElementById("nonButton").addEventListener("click", function() {
+        document.getElementById("userChoice").value = "Non";
+        document.getElementById("responseMessage").textContent = "Merci pour votre intérêt. N'hésitez pas à nous contacter si vous avez des questions.";
+        document.getElementById("responseMessage").classList.remove("hidden");
+        submitData();
+    });*/
 });
 
 const mySlider = document.getElementById("nbJours");
 const sliderValue = document.getElementById("nbJoursValue");
+
+mySlider.addEventListener("input", function() {
+    updateSliderValue(this.value);
+});
 
 function updateSliderValue(value) {
     let valPercent = (value - mySlider.min) / (mySlider.max - mySlider.min) * 100;
@@ -19,6 +36,7 @@ function updateSliderValue(value) {
 function validateAndDisplayContactForm() {
     if (validateInputs()) { // Si les entrées sont valides
         displayContactForm(); // Affichez le formulaire de contact
+        
     }
 }
 
@@ -32,7 +50,7 @@ function validateInputs() {
     const nbJours = parseInt(nbJoursInput.value, 10);
 
     if (isNaN(nbPassages) || nbPassages < 50 || nbPassages > 2000) {
-        alert("Veuillez entrer un nombre de passages par jour valide entre 1 et 2000.");
+        alert("Veuillez entrer un nombre de passages par jour valide entre 50 et 2000.");
         nbPassagesInput.focus();
         return false;
     } else if (isNaN(nbJours) || nbJours < 1 || nbJours > 31) {
@@ -70,45 +88,81 @@ document.getElementById('typeDispositif').addEventListener('change', function() 
 });
 
 function calculer() {
+    console.log("Début du calcul...");
+
     const nom = document.getElementById('nom').value.trim();
     const prenom = document.getElementById('prenom').value.trim();
     const email = document.getElementById('email').value.trim();
     const telephone = document.getElementById('telephone').value.trim();
-   
+    const groupementSelect = document.getElementById('groupement');
+    const consentCheckbox = document.getElementById('consentCheckbox');
+    
+    // Ajout de vérifications pour chaque élément
+    const nbPassagesInput = document.getElementById('nbPassages');
+    if (!nbPassagesInput) {
+        console.error("L'élément nbPassages n'existe pas.");
+        return;
+    }
+    const nbPassages = parseInt(nbPassagesInput.value, 10);
+    
+    const nbJoursInput = document.getElementById('nbJours');
+    if (!nbJoursInput) {
+        console.error("L'élément nbJours n'existe pas.");
+        return;
+    }
+    const nbJours = parseInt(nbJoursInput.value, 10);
 
+    const typeDispositifSelect = document.getElementById('typeDispositif');
+    if (!typeDispositifSelect) {
+        console.error("L'élément typeDispositif n'existe pas.");
+        return;
+    }
+    const typeDispositif = typeDispositifSelect.value;
+
+    const dureeEngagementSelect = document.getElementById('dureeEngagement');
+    if (!dureeEngagementSelect) {
+        console.error("L'élément dureeEngagement n'existe pas.");
+        return;
+    }
+    const dureeEngagement = parseInt(dureeEngagementSelect.value);
+
+    console.log(`nbPassages: ${nbPassages}, nbJours: ${nbJours}, typeDispositif: ${typeDispositif}, dureeEngagement: ${dureeEngagement}`);
     const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     const phonePattern = /^(?:(?:\+33|0)\s?\d{1}\s?\d{2}\s?\d{2}\s?\d{2}\s?\d{2}|\+33\s?\d{9}|0\d{9})$/;
 
-    if (!emailPattern.test(email)) {
+      if (!emailPattern.test(email)) {
         alert('Veuillez entrer une adresse email valide. Exemple: utilisateur@domaine.com');
         return;
-    }
+      }
 
-    if (!phonePattern.test(telephone)) {
+      if (!phonePattern.test(telephone)) {
         alert('Veuillez entrer un numéro de téléphone valide.');
         return;
-    }
+      }
 
-    if (!nom || !prenom || !email || !telephone) {
+    // Vérifier les autres champs de contact
+    if (!nom || !prenom || !email || !telephone ) {
         alert('Veuillez remplir tous les champs de contact.');
         return; // Arrêter l'exécution si les champs ne sont pas remplis
     }
 
+    if (!groupementSelect.value) {
+                alert('Veuillez sélectionner un groupement.');
+                groupementSelect.focus();
+                return false;
+            }
+   if (!consentCheckbox.checked) {
+                alert('Veuillez accepter que vos informations soient transmises à Tessan.');
+                consentCheckbox.focus();
+                return false;
+      }
+     submitData();
     // Calculer et afficher les résultats
-    const nbPassages = parseInt(document.getElementById('nbPassages').value);
-    const nbJours = parseInt(document.getElementById('nbJours').value);
-    const typeDispositifSelect = document.getElementById('typeDispositif');
-    const typeDispositif = typeDispositifSelect.value;
-    const dispositifText = typeDispositifSelect.options[typeDispositifSelect.selectedIndex].text;
-    const dureeEngagement = parseInt(document.getElementById('dureeEngagement').value);
-
     let pourcentageConversion = 1;
-  
-
     pourcentageConversion *= {
-        'console': 0.01,
-        'borne': 0.02,
-        'cabine': 0.03
+        'console': 0.015,
+        'borne': 0.0175,
+        'cabine': 0.0225
     }[typeDispositif];
 
     let coutInstallation = 0;
@@ -137,46 +191,46 @@ function calculer() {
     const roiCinqAns = caCinqAns - (coutInstallation * dureeEngagement + 250);
     const montantParJour = conversions * 20; // Montant perçu par jour
     const seuilRentabilite = Math.ceil((roiCinqAns / (60 * nbJours) / 20));
-    const tcParMoisRentable = Math.ceil((roiCinqAns / dureeEngagement) / (20 * nbJours));
+    const tcParMois = Math.ceil(conversions * nbJours);
+    
+    // Nouveau calcul pour tcParMoisRentable
+    const tcParMoisRentable = Math.ceil(coutInstallation / 20);
 
-    if (roiCinqAns > 0) {
-        const rentableMessage = document.getElementById('rentableMessage');
-        rentableMessage.style.display = 'block';
-        rentableMessage.textContent = "Votre simulation";
-        rentableMessage.className = 'rentableTitle';
-        afficherResultats();
-        document.getElementById('form-note').style.display = 'none';
-    } else {
-        document.getElementById('rentableMessage').style.display = 'none';
-        document.getElementById('detailsAvantages').style.display = 'none';
-    }
-
-    document.getElementById('caResultat').textContent = `${caCinqAns.toLocaleString('fr-FR')} € (${dispositifText})`;
-    document.getElementById('montantParJour').textContent = `${montantParJour.toLocaleString('fr-FR')} €  (${dispositifText})`;
+    document.getElementById('caResultat').textContent = `${caCinqAns.toLocaleString('fr-FR')} € (${typeDispositifSelect.options[typeDispositifSelect.selectedIndex].text})`;
+    document.getElementById('tcParMois').textContent = `${tcParMois.toLocaleString('fr-FR')} téléconsultations par mois (${typeDispositifSelect.options[typeDispositifSelect.selectedIndex].text})`;
     document.getElementById('teleconsultationsRentable').textContent = `${tcParMoisRentable} téléconsultations par mois`;
 
-    // Préparation des données à envoyer
+    document.getElementById('contactForm').classList.add('hidden');
+    document.getElementById('results').classList.remove('hidden');
+    document.getElementById('disclaimer').classList.remove('hidden');
+
+    // Masquer l'élément form-note
+    document.getElementById('form-note').classList.add('hidden');
+     
+}
+
+function submitData() {
+    const dateSoumission = new Date().toLocaleDateString('fr-FR');
     const data = {
         nom: document.getElementById('nom').value,
         prenom: document.getElementById('prenom').value,
         email: document.getElementById('email').value,
         telephone: document.getElementById('telephone').value,
         groupement: document.getElementById('groupement').value,
-        nbPassages: nbPassages,
-        nbJours: nbJours,
-        typeDispositif: typeDispositif,
-        desertMedical: document.getElementById('desertMedical').value,
-        dureeEngagement: dureeEngagement
+        nbPassages: parseInt(document.getElementById('nbPassages').value),
+        nbJours: parseInt(document.getElementById('nbJours').value),
+        typeDispositif: document.getElementById('typeDispositif').value,
+        dureeEngagement: parseInt(document.getElementById('dureeEngagement').value),
+        dateSoumission: dateSoumission // Utilisation de la variable explicite
+       /* userChoice: document.getElementById('userChoice').value*/
     };
+ console.log("Données à soumettre:", data); // Ajouter un log pour vérifier les données soumises
 
     submitToGoogleSheets(data);
-
-    document.getElementById('contactForm').classList.add('hidden');
-    document.getElementById('results').classList.remove('hidden');
 }
 
 function submitToGoogleSheets(data) {
-    const url = "https://script.google.com/macros/s/AKfycbwZEKcsTMgDXeH5ftR0cdQ_UMpJYt1bmMFYA0oUy_TydAX2QTnxxJN-x5-peuCITolu/exec"; // Remplacez par l'URL de votre script Google Apps
+    const url = "https://script.google.com/macros/s/AKfycbxYrvSsB1cVd7naI7DIePRyR6bKTyFQVlSSbOyZIFcdlHWn9MiJsBhdj1f80f62oqehRw/exec"; // Remplacez par l'URL de votre script Google Apps
 
     const formData = new FormData();
     for (const key in data) {
@@ -189,31 +243,17 @@ function submitToGoogleSheets(data) {
         method: "POST",
         body: formData
     }).then(response => {
-        if (response.ok) {
-            alert("Données soumises avec succès !");
-        } else {
-            alert("Erreur lors de la soumission des données.");
+        if (!response.ok) {
+            console.error("Erreur lors de la soumission des données.");
         }
     }).catch(error => {
         console.error("Erreur de soumission : ", error);
-        alert("Erreur lors de la soumission des données.");
     });
 }
 
 function afficherResultats() {
-    document.getElementById('contactForm').classList.add('hidden');
-    document.getElementById('results').classList.remove('hidden');
-
-    const disclaimer = document.getElementById('disclaimer');
-    if (!disclaimer) {
-        const resultsContainer = document.getElementById('results');
-        const disclaimerElement = document.createElement('p');
-        disclaimerElement.setAttribute('id', 'disclaimer');
-        disclaimerElement.style.fontStyle = 'italic';
-        disclaimerElement.style.textAlign = 'center';
-        disclaimerElement.style.marginTop = '20px';
-        disclaimerElement.style.fontSize = '0.6em'; 
-        disclaimerElement.textContent = 'Les résultats présentés sont des estimations basées sur des hypothèses actuelles concernant l\'utilisation de nos dispositifs et ne garantissent pas les performances futures.';
-        resultsContainer.appendChild(disclaimerElement);
-    }
+    console.log("Affichage des résultats...");
+    calculer();
+   
+    
 }
