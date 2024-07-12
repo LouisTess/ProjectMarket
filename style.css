@@ -1,1 +1,261 @@
+.hidden {
+    display: none;
+}
+
+.visible {
+    display: block; /* ou 'flex' selon vos besoins de mise en page */
+}
+
+body {
+    font-family: 'Montserrat', sans-serif;
+    margin: 10; /* Suppression des marges par défaut */
+    padding: 0; /* Suppression des espacements par défaut */
+    background-image: url('background 2.1.jpg'); /* Chemin correct vers l'image */
+    background-size: cover; /* Couvrir l'ensemble du fond */
+    background-position: center; /* Centrer l'image de fond */
+    background-attachment: fixed; /* Fixer l'image de fond */
+    background-color: #f0f8ff; /* Couleur de fond de secours */
+    color: #213155; /* Couleur principale des textes */
+    display: flex; /* Utilisation de flexbox pour aligner le contenu */
+    justify-content: center; /* Centrer horizontalement */
+    align-items: center; /* Centrer verticalement */
+    height: 100vh; /* Occuper toute la hauteur de la fenêtre */
+    position: relative;
+    overflow: hidden; /* Cacher tout dépassement */
+}
+
+#logo {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    width: 200px; /* Adaptez selon la taille de votre logo */
+}
+
+form {
+    background-color: rgba(255, 255, 255, 0.95); /* Fond semi-transparent pour le formulaire */
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px; /* Largeur maximale du formulaire */
+    width: 100%; /* Utiliser toute la largeur disponible */
+   /* margin: 20px;*/
+}
+
+h1 {
+    color: #213155;
+    text-align: center;
+    font-size: 24px;
+    font-weight: 600; /* Police en gras pour les titres */
+
+}
+
+label, input, select, button, textarea {
+    font-family: 'Montserrat', sans-serif;
+    display: block;
+    width: 100%;
+    margin-bottom: 10px;
+}
+
+label {
+    color: #213155; /* Bleu foncé pour le contraste, adapté de votre palette existante */
+    font-weight: bold; /* Rend le texte en gras */
+}
+
+input[type="number"], input[type="text"], input[type="email"], input[type="tel"], textarea, select {
+    width: calc(100% - 22px);
+    padding: 10px;
+    margin-bottom: 20px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    font-size: 16px;
+    background: rgba(255, 255, 255, 0.8);
+}
+
+.slider {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 15px;
+    background: linear-gradient(to right, #3366FF 50%, #d5d5d5 50%);
+    outline: none;
+    opacity: 0.7;
+    transition: opacity .2s;
+}
+
+.slider:hover {
+    opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 25px;
+    height: 25px;
+    background: #3366FF;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+.slider::-moz-range-thumb {
+    width: 25px;
+    height: 25px;
+    background: #3366FF;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+button {
+    padding: 10px;
+    background-color: #213155; /* Couleur de fond des boutons */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #3588b8; /* Changement de couleur au survol */
+}
+
+.resultatMessage, .detailsMessage {
+    margin-bottom: 20px; /* Ajoutez de l'espace entre les messages */
+    color: green; /* Exemple de couleur pour les messages positifs */
+}
+
+.resultat {
+    background-color: #f0f8ff;
+    padding: 10px;
+    margin-bottom: 10px; /* Espace entre les éléments de résultat */
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.resultat span {
+    font-weight: bold;
+    color: #19b538; /* Couleur des résultats importants */
+}
+
+#rentableMessage {
+    text-align: center;
+    font-size: 24px; /* Taille de police pour un titre */
+    font-weight: bold; /* Rendre le texte gras */
+    color: green; /* La couleur verte indiquée dans votre script */
+    margin-top: 20px; /* Espacement au-dessus du titre */
+    margin-bottom: 20px; /* Espacement en dessous du titre */
+}
+
+#detailsAvantages {
+    font-size: 18px;
+    color: #333;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.required {
+    color: red;
+    margin-left: 3px; /* Ajoute un peu d'espace entre le label et l'astérisque */
+}
+
+.form-note {
+    margin-top: 20px; /* Ajuster selon les besoins pour plus d'espace */
+    font-style: italic; /* Italicise le texte */
+    color: #213155; /* Couleur du texte, ajustez selon votre palette de couleurs */
+}
+
+.highlight {
+    color: green;
+    font-weight: bold;
+}
+
+
+/*.checkbox-container {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 10px; 
+    justify-content: flex-start; 
+} 
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 6px; 
+}
+
+.checkbox-container label {
+    font-size: 12px; 
+    margin: 0; 
+    
+}  */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 20px;
+}
+
+.form-container label {
+    font-size: 14px; /* Ajustez la taille de la police pour les labels */
+    margin-bottom: 5px; /* Espacement entre le label et l'input */
+}
+
+.form-container input,
+.form-container select {
+    width: 100%;
+    max-width: 400px; /* Limitez la largeur pour une meilleure lisibilité */
+    margin-bottom: 10px; /* Espacement sous chaque champ */
+    padding: 8px; /* Ajoutez du padding pour le confort de l'utilisateur */
+    font-size: 14px; /* Ajustez la taille de la police */
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px; /* Espacement sous le champ */
+}
+
+.checkbox-container input[type="checkbox"] {
+    margin-right: 10px; /* Espacement entre la case à cocher et le texte */
+}
+
+.checkbox-container label {
+    font-size: 14px; /* Ajustez la taille de la police pour le texte */
+    margin: 0; /* Supprimez les marges par défaut */
+}
+
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centrer verticalement les boutons dans le conteneur */
+    margin-top: 10px;
+    width: 70%; /* Réduire la largeur du conteneur */
+    margin: 0 auto; /* Centre le conteneur horizontalement */
+    height: 50px; /* Fixer une hauteur spécifique pour le conteneur */
+}
+.cta-buttons p {
+    font-weight: bold; /* Mettre le texte en gras */
+    margin: 0; /* Supprimer les marges par défaut */
+    margin-right: 10px; /* Ajouter un espace entre le texte et les boutons */
+}
+.cta-buttons button {
+    margin: 0 10px;
+    padding: 5px 10px;
+    background-color: #3264fe;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+}
+
+.cta-buttons button:hover {
+    background-color: #274bb8;
+}
+
+.response-message {
+    margin-top: 20px;
+    font-size: 1.2em;
+    text-align: center;
+    font-weight: bold;
+}
 
